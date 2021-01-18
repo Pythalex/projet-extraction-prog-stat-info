@@ -4,3 +4,4 @@ numpy
 matplotlib
 seaborn
 sklearn
+jedi==0.17.2 # to solve notebook autocomplete bug
