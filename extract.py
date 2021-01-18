@@ -13,7 +13,10 @@ def create_df(path) :
         opinion = meta_data[1]
         brand = meta_data[2]
         l.append([opinion,brand,body])
-    return pd.DataFrame(l, columns =['Opinion', 'Brand', 'Body']) 
+    df = pd.DataFrame(l, columns =['opinion', 'brand', 'body'])
+    return df
+
+
 
 def save_df(df, path) :
     df.to_csv(path,index=False)
