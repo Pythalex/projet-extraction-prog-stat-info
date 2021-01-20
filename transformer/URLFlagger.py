@@ -23,10 +23,14 @@ class URLFlagger(TransformerMixin):
     def replace(self, sentence):
         sentence = str(sentence) # copy
         
+        shift = 0
         for match in self.regex.finditer(sentence):
             f, t = match.span()
+            replaced = match.group()
             # replace matched sequence with flag
-            sentence = sentence[:f] + self.flag + sentence[t:]
+            sentence = sentence[:f+shift] + self.flag + sentence[t+shift:]
+
+            shift += len(self.flag) - len(replaced)
 
         return sentence
 
@@ -38,8 +42,16 @@ if __name__ == "__main__":
     tweets = pd.read_csv("../train_proper.csv")
     transformer = URLFlagger()
     
-    for testline in [0, 222, 314, 347]:
-        test = tweets.iloc[testline][["body"]]
-        print(test["body"])
-        print(transformer.transform(test)["body"])
+    test = tweets.iloc[[0, 222, 314, 347]]
+    tsf = transformer.transform(test["body"])
+    for i in range(test.shape[0]):
+        print(test.iloc[i]["body"])
+        print(tsf.iloc[i])
+        print()
+
+    test = pd.DataFrame({"body": ["http://premierlien.com puis ensuite https://deuxiemelien.com/salut Les deux urls doivent être traitées."]})
+    tsf = transformer.transform(test["body"])
+    for i in range(test.shape[0]):
+        print(test.iloc[i]["body"])
+        print(tsf.iloc[i])
         print()
