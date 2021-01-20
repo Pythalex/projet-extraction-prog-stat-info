@@ -1,7 +1,7 @@
 from sklearn.base import TransformerMixin
 import re
 
-class NumberFlagger(TransformerMixin):
+class URLFlagger(TransformerMixin):
 
     def __init__(self, flag="<URL>"):
         self.regex = re.compile(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     import pandas as pd
 
     tweets = pd.read_csv("../train_proper.csv")
-    transformer = NumberFlagger()
+    transformer = URLFlagger()
     
     for testline in [0, 222, 314, 347]:
         test = tweets.iloc[testline][["body"]]
