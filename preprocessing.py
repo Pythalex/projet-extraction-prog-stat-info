@@ -7,6 +7,9 @@ tweets = tweets.convert_dtypes("str")
 #print(tweets.dtypes)
 #print(tweets.head(5))
 
+def clean_body(tweet) : 
+
+
 def produce_df_features(df) :
     for i,v in enumerate(df['body']):
         df.loc[i,'clean'] = p.clean(v)
