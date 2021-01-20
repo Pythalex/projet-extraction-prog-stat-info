@@ -1,3 +1,5 @@
+from sklearn.base import TransformerMixin
+
 class Example(TransformerMixin):
 
     def __init__(self, mon_param):
