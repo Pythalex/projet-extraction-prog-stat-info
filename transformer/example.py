@@ -1,6 +1,10 @@
 class Example(TransformerMixin):
 
+    def __init__(self, mon_param):
+        self.mon_param = mon_param
+
     def fit(X, y=None):
+        function(mon_param)
         ...
         return self
 
