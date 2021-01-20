@@ -1,17 +1,17 @@
 from sklearn.base import TransformerMixin
 
 
-class SplitterPunctuation(TransformerMixin):
+class LowerCaseTransformer(TransformerMixin):
 
-    def __init__(self, ponct=r"[, \-!?:]+"):
-        self.ponct = ponct
+    def __init__(self):
+        pass
 
     def fit(self, X, y=None):
         return self
 
     def transform(self, X):
         X = X.copy()
-        X = X.str.split(self.ponct)
+        X = X.apply(str.lower)
         return X
 
     def fit_transform(self, X, y=None):
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     import pandas as pd
 
     tweets = pd.read_csv("../train_proper.csv")
-    transformer = SplitterPunctuation()
+    transformer = LowerCaseTransformer()
 
     test = tweets.iloc[list(range(5))]
     tsf = transformer.transform(test["body"])
