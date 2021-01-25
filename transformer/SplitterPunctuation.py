@@ -3,7 +3,7 @@ from sklearn.base import TransformerMixin
 
 class SplitterPunctuation(TransformerMixin):
 
-    def __init__(self, ponct=r"[, \-!?:]+"):
+    def __init__(self, ponct=r"[, \-!?:\"]+"):
         self.ponct = ponct
 
     def fit(self, X, y=None):
