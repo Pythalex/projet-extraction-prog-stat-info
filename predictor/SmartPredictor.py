@@ -1,0 +1,73 @@
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from transformer.LowerCaseTransformer import LowerCaseTransformer
+from transformer.MentionFlagger import MentionFlagger
+from transformer.NumberFlagger import NumberFlagger
+from transformer.SplitterPunctuation import SplitterPunctuation
+from transformer.URLFlagger import URLFlagger
+from sklearn.feature_extraction.text import CountVectorizer
+import pandas as pd
+import numpy as np
+from predictor.LanguagePredictor import LanguagePredictor
+from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
+from sklearn.utils.multiclass import unique_labels
+
+
+
+class SmartPredictor(BaseEstimator, ClassifierMixin):
+
+    language_pred = LanguagePredictor(nbpass=3)
+    
+    def __init__(self):
+        self.pipe = Pipeline([
+            ("lower case", LowerCaseTransformer()),
+            ("URL flag", URLFlagger()),
+            ("Mention flag", MentionFlagger()),
+            ("Number flag", NumberFlagger()),
+            ("Tokenize", SplitterPunctuation()),
+            ("Count vector", CountVectorizer(analyzer=lambda x : x)), # analyzer=identify disables builtin tokenizer
+            ("Bayesian predictor", MultinomialNB())
+        ])
+
+    def fit(self, X, y):
+        
+        # Store the classes seen during fit
+        self.classes_ = unique_labels(y)
+
+        langs = self.language_pred.predict(X)
+        english_tweets = np.where(langs == "en")[0]
+        
+        # X is a pandas series so it needs indices to be consistent (first row != 0) while y is a numpy array such that first row is index 0
+        self.pipe.fit(X[langs.index[english_tweets]], y[english_tweets])
+        
+        print("fit")
+        
+        return self
+
+    def predict(self, X):
+        # Check if fit has been called
+        check_is_fitted(self)
+        
+        langs = self.language_pred.predict(X)
+        english_tweets = np.where(langs == "en")[0]
+        foreign_tweets = np.where(langs != "en")[0]
+
+        foreign_pred = pd.DataFrame({"target" : ("irr")}, index=langs.index[foreign_tweets])
+        
+        preds = self.pipe.predict(X[langs.index[english_tweets]])
+        english_pred = pd.DataFrame({"target": preds}, index=langs.index[english_tweets])
+
+        return pd.concat((foreign_pred, english_pred), axis=0).sort_index()["target"]
+
+    def fit_predict(self, X, y):
+        return self.fit(X, y).predict(X)
+
+    #def score(self, X, y):
+        #"""Mean accuracy score on X,y"""
+        #y_pred = self.predict(X)
+        
+        #diff = [1 if y[i] == y_pred[i] else 0 for i in range(len(y))]
+        #return diff.sum() / len(diff) 
+
+        

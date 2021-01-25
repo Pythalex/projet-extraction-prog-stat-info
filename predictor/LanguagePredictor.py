@@ -16,6 +16,10 @@ class LanguagePredictor:
         different language for ambiguous texts. To prevent different prediction,
         an argument "nbpass" allows to specify a number of time we loop the prediction
         method, to maximize the chance that the top language of the text is predicted.
+    
+        This class uses a memoization technique to predict the same language for 
+        a specific string each time it is called (the nbpass is used for the first
+        call when computing the string language.)
 
         Args:
             nbpass (int): Number of times the predictor will predict a language
@@ -25,12 +29,19 @@ class LanguagePredictor:
         """
 
         self.nbpass = nbpass
+        self.detected = {}
 
     def predict(self, X):
         return X.apply(self.detect_str)
 
     def detect_str(self, string):
-        pred = [detect(string) for i in range(self.nbpass)]
-        return mode(pred)
+        
+        if string in self.detected:
+            return self.detected[string]
+        else:
+            pred = [detect(string) for i in range(self.nbpass)]
+            lang = mode(pred)
+            self.detected[string] = lang
+            return lang
 
 
