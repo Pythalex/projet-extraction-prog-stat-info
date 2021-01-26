@@ -1,5 +1,6 @@
 from sklearn.base import TransformerMixin
 from SplitterPunctuation import SplitterPunctuation
+import re
 #To be applied after tokenization
 class StopWordFilter(TransformerMixin):
     
@@ -24,10 +25,20 @@ class StopWordFilter(TransformerMixin):
     def fit(self, X, y=None):
         return self
 
+    # def transform(self, X):
+    #     X = X.copy()
+    #     X = X.apply(lambda x : [el for el in x if el not in self.stop_words])
+    #     return X
+
     def transform(self, X):
         X = X.copy()
-        X = X.apply(lambda x : [el for el in x if el not in self.stop_words])
+        X = X.apply(self.replace)
         return X
+    
+    def replace(self, row) :
+        for stop_word in self.stop_words :
+            row = re.sub(r'\b'+stop_word+r'\b',"",row)
+        return row
 
     def fit_transform(self, X, y=None):
         return self.fit(X, y).transform(X)
@@ -40,12 +51,13 @@ if __name__ == "__main__":
 
     tweets = pd.read_csv("../train_proper.csv")
     transformer = StopWordFilter()
-    splitter = SplitterPunctuation()
-    tweets_split = splitter.transform(tweets["body"])
+    # splitter = SplitterPunctuation()
+    # tweets_split = splitter.transform(tweets["body"])
 
-    test = tweets_split.iloc[list(range(5))]
-    tsf = transformer.transform(test)
+    # test = tweets_split.iloc[list(range(5))]
+    test = tweets.iloc[list(range(5))]
+    tsf = transformer.transform(test["body"])
     for i in range(test.shape[0]):
-        print(test.iloc[i])
+        #print(test.iloc[i])
         print(tsf.iloc[i])
         print()
