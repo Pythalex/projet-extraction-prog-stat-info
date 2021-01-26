@@ -1,6 +1,7 @@
 from sklearn.base import TransformerMixin
 import re
 
+#Works on whole sentences
 class NegationTransformer(TransformerMixin):
 
     def __init__(self, flag="not"):
