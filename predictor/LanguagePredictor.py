@@ -2,16 +2,16 @@ from langdetect import detect
 from enum import Enum
 from statistics import mode
 
-class Language(Enum):
-    ENGLISH = 1
-    FOREIGN = 2
-
 class LanguagePredictor:
 
     def __init__(self, nbpass):
         """Init method
+        
+        Predicts the language of string data as a 2 character keywords:
+        - "en" if the string is english
+        - anything else for other languages
 
-        The predictor is not deterministic, and two predictions of the same
+        The detection algorithm is not deterministic, and two predictions of the same
         text will produce slightly different results, or it can also predict a
         different language for ambiguous texts. To prevent different prediction,
         an argument "nbpass" allows to specify a number of time we loop the prediction
@@ -36,12 +36,14 @@ class LanguagePredictor:
 
     def detect_str(self, string):
         
-        if string in self.detected:
-            return self.detected[string]
-        else:
-            pred = [detect(string) for i in range(self.nbpass)]
-            lang = mode(pred)
-            self.detected[string] = lang
-            return lang
-
+        try:
+            if string in self.detected:
+                return self.detected[string]
+            else:
+                pred = [detect(string) for i in range(self.nbpass)]
+                lang = mode(pred)
+                self.detected[string] = lang
+                return lang
+        except: # raise exception when there is no word to analyze
+            return "??"
 

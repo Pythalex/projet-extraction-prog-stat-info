@@ -1,11 +1,10 @@
 from sklearn.base import TransformerMixin
 import re
 
-#Works on whole sentences
-class NegationTransformer(TransformerMixin):
+class URLFilter(TransformerMixin):
 
-    def __init__(self, flag="not"):
-        self.regex = re.compile(r"\w+n't")
+    def __init__(self, flag=""):
+        self.regex = re.compile(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
         self.flag = flag
 
     def fit(self, X, y=None):
@@ -30,7 +29,7 @@ class NegationTransformer(TransformerMixin):
             replaced = match.group()
             # replace matched sequence with flag
             sentence = sentence[:f+shift] + self.flag + sentence[t+shift:]
-
+            
             shift += len(self.flag) - len(replaced)
 
         return sentence
@@ -41,9 +40,16 @@ if __name__ == "__main__":
     import pandas as pd
 
     tweets = pd.read_csv("train_proper.csv")
-    transformer = NegationTransformer()
-    
-    test = tweets.iloc[[689, 696, 714, 823]]
+    transformer = URLFilter()
+
+    test = tweets.iloc[[0, 222, 314, 347]]
+    tsf = transformer.transform(test["body"])
+    for i in range(test.shape[0]):
+        print(test.iloc[i]["body"])
+        print(tsf.iloc[i])
+        print()
+
+    test = pd.DataFrame({"body": ["http://premierlien.com puis ensuite https://deuxiemelien.com/salut Les deux urls doivent être traitées."]})
     tsf = transformer.transform(test["body"])
     for i in range(test.shape[0]):
         print(test.iloc[i]["body"])

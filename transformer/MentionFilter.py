@@ -1,11 +1,10 @@
 from sklearn.base import TransformerMixin
 import re
 
-#Works on whole sentences
-class NegationTransformer(TransformerMixin):
+class MentionFilter(TransformerMixin):
 
-    def __init__(self, flag="not"):
-        self.regex = re.compile(r"\w+n't")
+    def __init__(self, flag=""):
+        self.regex = re.compile("@\w+")
         self.flag = flag
 
     def fit(self, X, y=None):
@@ -30,7 +29,7 @@ class NegationTransformer(TransformerMixin):
             replaced = match.group()
             # replace matched sequence with flag
             sentence = sentence[:f+shift] + self.flag + sentence[t+shift:]
-
+            
             shift += len(self.flag) - len(replaced)
 
         return sentence
@@ -41,9 +40,9 @@ if __name__ == "__main__":
     import pandas as pd
 
     tweets = pd.read_csv("train_proper.csv")
-    transformer = NegationTransformer()
-    
-    test = tweets.iloc[[689, 696, 714, 823]]
+    transformer = MentionFilter()
+
+    test = tweets.iloc[[0, 6, 41, 106]]
     tsf = transformer.transform(test["body"])
     for i in range(test.shape[0]):
         print(test.iloc[i]["body"])

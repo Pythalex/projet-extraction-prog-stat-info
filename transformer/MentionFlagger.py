@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     import pandas as pd
 
-    tweets = pd.read_csv("../train_proper.csv")
+    tweets = pd.read_csv("train_proper.csv")
     transformer = MentionFlagger()
 
     test = tweets.iloc[[0, 6, 41, 106]]

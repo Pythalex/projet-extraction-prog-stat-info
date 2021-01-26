@@ -12,32 +12,37 @@ from predictor.LanguagePredictor import LanguagePredictor
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import unique_labels
-
+from transformer.MentionFilter import MentionFilter
+from transformer.HashtagFilter import HashtagFilter
+from transformer.URLFilter import URLFilter
 
 
 class SmartPredictor(BaseEstimator, ClassifierMixin):
 
+    pre_lang_detect_pipe = Pipeline([
+            ("remove mention", MentionFilter()),
+            ("remove hash", HashtagFilter()),
+            ("remove url", URLFilter()),
+        ])
     language_pred = LanguagePredictor(nbpass=3)
     
-    def __init__(self):
-        self.pipe = Pipeline([
-            ("lower case", LowerCaseTransformer()),
-            ("URL flag", URLFlagger()),
-            ("Mention flag", MentionFlagger()),
-            ("Number flag", NumberFlagger()),
-            ("Tokenize", SplitterPunctuation()),
-            ("Count vector", CountVectorizer(analyzer=lambda x : x)), # analyzer=identify disables builtin tokenizer
-            ("Bayesian predictor", MultinomialNB())
-        ])
-
+    def __init__(self, pipe, pre_lang_detect_pipe=pre_lang_detect_pipe):
+        self.pre_lang_detect_pipe = pre_lang_detect_pipe
+        self.pipe = pipe
+        
     def fit(self, X, y):
         
         # Store the classes seen during fit
         self.classes_ = unique_labels(y)
 
-        langs = self.language_pred.predict(X)
+        # Use the first pipeline to predict languages
+        self.pre_lang_detect_pipe.fit(X, y)
+        X_lang = X.copy()
+        X_lang = self.pre_lang_detect_pipe.transform(X_lang)
+        langs = self.language_pred.predict(X_lang)
         english_tweets = np.where(langs == "en")[0]
         
+        # Train the second pipeline
         # X is a pandas series so it needs indices to be consistent (first row != 0) while y is a numpy array such that first row is index 0
         self.pipe.fit(X[langs.index[english_tweets]], y[english_tweets])
         

@@ -1,5 +1,5 @@
 from sklearn.base import TransformerMixin
-from SplitterPunctuation import SplitterPunctuation
+from transformer.SplitterPunctuation import SplitterPunctuation
 import re
 #To be applied after tokenization
 class StopWordFilter(TransformerMixin):
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     import pandas as pd
 
-    tweets = pd.read_csv("../train_proper.csv")
+    tweets = pd.read_csv("train_proper.csv")
     transformer = StopWordFilter()
     # splitter = SplitterPunctuation()
     # tweets_split = splitter.transform(tweets["body"])

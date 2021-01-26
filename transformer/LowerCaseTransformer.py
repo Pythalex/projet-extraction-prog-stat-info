@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     import pandas as pd
 
-    tweets = pd.read_csv("../train_proper.csv")
+    tweets = pd.read_csv("train_proper.csv")
     transformer = LowerCaseTransformer()
 
     test = tweets.iloc[list(range(5))]
