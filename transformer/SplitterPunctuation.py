@@ -1,9 +1,12 @@
 from sklearn.base import TransformerMixin
+import re
 
+regex = r"[, \-!?:\"]+"
+regex_compiled = re.compile(regex)
 
 class SplitterPunctuation(TransformerMixin):
 
-    def __init__(self, ponct=r"[, \-!?:\"]+"):
+    def __init__(self, ponct=regex):
         self.ponct = ponct
 
     def fit(self, X, y=None):
@@ -16,6 +19,10 @@ class SplitterPunctuation(TransformerMixin):
 
     def fit_transform(self, X, y=None):
         return self.fit(X, y).transform(X)
+
+# as a function
+def split_punctuation(string):
+    return regex_compiled.split(string)
 
 
 if __name__ == "__main__":
