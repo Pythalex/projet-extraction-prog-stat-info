@@ -36,9 +36,8 @@ class SmartPredictor(BaseEstimator, ClassifierMixin):
         self.classes_ = unique_labels(y)
 
         # Use the first pipeline to predict languages
-        self.pre_lang_detect_pipe.fit(X, y)
-        X_lang = X.copy()
-        X_lang = self.pre_lang_detect_pipe.transform(X_lang)
+        # We don't use a validation set because the lang detector doesn't fit on the data, it will predict the same whether it's new or old data.
+        X_lang = self.pre_lang_detect_pipe.fit_transform(X.copy(), y)
         langs = self.language_pred.predict(X_lang)
         english_tweets = np.where(langs == "en")[0]
         
@@ -54,7 +53,8 @@ class SmartPredictor(BaseEstimator, ClassifierMixin):
         # Check if fit has been called
         check_is_fitted(self)
         
-        langs = self.language_pred.predict(X)
+        X_lang = self.pre_lang_detect_pipe.fit_transform(X.copy())
+        langs = self.language_pred.predict(X_lang)
         english_tweets = np.where(langs == "en")[0]
         foreign_tweets = np.where(langs != "en")[0]
 
