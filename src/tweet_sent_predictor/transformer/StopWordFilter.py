@@ -1,5 +1,5 @@
 from sklearn.base import TransformerMixin
-from transformer.SplitterPunctuation import SplitterPunctuation
+from tweet_sent_predictor.transformer.SplitterPunctuation import SplitterPunctuation
 import re
 #To be applied after tokenization
 class StopWordFilter(TransformerMixin):

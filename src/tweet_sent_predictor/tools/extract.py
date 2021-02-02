@@ -26,6 +26,3 @@ def create_df(path) :
 
 def save_df(df, path) :
     df.to_csv(path,index=False)
-
-df = create_df("train.txt")
-save_df(df,"train_proper.csv")

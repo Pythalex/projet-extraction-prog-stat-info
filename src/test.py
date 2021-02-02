@@ -1,14 +1,14 @@
 from sklearn.pipeline import Pipeline
-from transformer.LowerCaseTransformer import LowerCaseTransformer
-from transformer.MentionFlagger import MentionFlagger
-from transformer.NumberFlagger import NumberFlagger
-from transformer.SplitterPunctuation import SplitterPunctuation
-from transformer.URLFlagger import URLFlagger
+from tweet_sent_predictor.transformer.LowerCaseTransformer import LowerCaseTransformer
+from tweet_sent_predictor.transformer.MentionFlagger import MentionFlagger
+from tweet_sent_predictor.transformer.NumberFlagger import NumberFlagger
+from tweet_sent_predictor.transformer.SplitterPunctuation import SplitterPunctuation
+from tweet_sent_predictor.transformer.URLFlagger import URLFlagger
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-df = pd.read_csv("train_proper.csv")
+df = pd.read_csv("tweet_sent_predictor/data/train_proper.csv")
 
 pipe = Pipeline([
     ("lower case", LowerCaseTransformer()),

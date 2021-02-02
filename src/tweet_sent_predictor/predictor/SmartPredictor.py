@@ -1,20 +1,20 @@
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
-from transformer.LowerCaseTransformer import LowerCaseTransformer
-from transformer.MentionFlagger import MentionFlagger
-from transformer.NumberFlagger import NumberFlagger
-from transformer.SplitterPunctuation import SplitterPunctuation
-from transformer.URLFlagger import URLFlagger
+from tweet_sent_predictor.transformer.LowerCaseTransformer import LowerCaseTransformer
+from tweet_sent_predictor.transformer.MentionFlagger import MentionFlagger
+from tweet_sent_predictor.transformer.NumberFlagger import NumberFlagger
+from tweet_sent_predictor.transformer.SplitterPunctuation import SplitterPunctuation
+from tweet_sent_predictor.transformer.URLFlagger import URLFlagger
 from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd
 import numpy as np
-from predictor.LanguagePredictor import LanguagePredictor
+from tweet_sent_predictor.predictor.LanguagePredictor import LanguagePredictor
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import unique_labels
-from transformer.MentionFilter import MentionFilter
-from transformer.HashtagFilter import HashtagFilter
-from transformer.URLFilter import URLFilter
+from tweet_sent_predictor.transformer.MentionFilter import MentionFilter
+from tweet_sent_predictor.transformer.HashtagFilter import HashtagFilter
+from tweet_sent_predictor.transformer.URLFilter import URLFilter
 
 
 class SmartPredictor(BaseEstimator, ClassifierMixin):
