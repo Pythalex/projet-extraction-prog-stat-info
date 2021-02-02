@@ -36,9 +36,16 @@ python3 -m pip install -r requirements.txt
 
 ### Preprocessing
 
-Parsing du jeu de données:
+Avant de pouvoir exécuter les notebook, il est nécessaire d'effectuer le premier traitement sur le train.txt brut:
 
 ```bash
+cd src
 python extract.py
 ```
-train.txt -> train_proper.csv
+
+Résultat:
+tweet_sent_predictor/data/train.txt -> tweet_sent_predictor/data/train_proper.csv
+
+### Notebooks
+
+TODO
