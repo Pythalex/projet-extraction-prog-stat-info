@@ -12,3 +12,12 @@ keras
 tensorflow
 gensim
 fasttext
+torch
+tqdm
+scikit-plot
+logging
+wordcloud
+nltk
+transformers
+tensorflow
+ipywidgets
