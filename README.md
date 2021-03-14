@@ -52,11 +52,6 @@ tweet_sent_predictor/data/train.txt -> tweet_sent_predictor/data/train_proper.cs
 
 Les résultats pour le jeu de test on été produits avec le modèle BERT.
 
-#### Modèle BERT :
-Se trouve sur le notebook : BERT_Model.ipynb
-Ce notebook fait du fine-tuning sur les tweets d'un modèle BERT pré-entrainé et sauvegarde sous tf_models/BERT
-Ce modèle a été utilisé pour prédire les labels du corpus test
-
 #### Baseline
 Ce notebook utilise un modèle basique (Bayesien naif) et un traitement simple (Count vector) pour avoir des résultats de base sur lequels juger les modèles.
 
@@ -72,5 +67,8 @@ Similaire au SmartPredictor mais ne filtre pas les tweets étrangers pour évite
 #### XGBoost et LightGBM
 Des tests isolés de ces modèles sur les données avec le smartpredictor.
 
+#### Modèle BERT :
+Se trouve sur le notebook : BERT_Model.ipynb.
+Ce notebook fait du fine-tuning sur les tweets d'un modèle BERT pré-entrainé et sauvegarde sous tf_models/BERT.
 
 
