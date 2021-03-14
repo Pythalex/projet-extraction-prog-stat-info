@@ -67,8 +67,7 @@ Similaire au SmartPredictor mais ne filtre pas les tweets étrangers pour évite
 #### XGBoost et LightGBM
 Des tests isolés de ces modèles sur les données avec le smartpredictor.
 
-#### Modèle BERT :
-Se trouve sur le notebook : BERT_Model.ipynb.
+#### BERT_Model :
 Ce notebook fait du fine-tuning sur les tweets d'un modèle BERT pré-entrainé et sauvegarde sous tf_models/BERT.
 
 
