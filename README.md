@@ -3,6 +3,8 @@
 ELANBARI Anass
 BONIN Alexandre
 
+Rapport du projet : "Rapport extraction et programmation statistique M2.pdf"
+
 ---
 
 ## Instructions
@@ -48,7 +50,27 @@ tweet_sent_predictor/data/train.txt -> tweet_sent_predictor/data/train_proper.cs
 
 ### Notebooks
 
+Les résultats pour le jeu de test on été produits avec le modèle BERT.
+
 #### Modèle BERT :
 Se trouve sur le notebook : BERT_Model.ipynb
 Ce notebook fait du fine-tuning sur les tweets d'un modèle BERT pré-entrainé et sauvegarde sous tf_models/BERT
 Ce modèle a été utilisé pour prédire les labels du corpus test
+
+#### Baseline
+Ce notebook utilise un modèle basique (Bayesien naif) et un traitement simple (Count vector) pour avoir des résultats de base sur lequels juger les modèles.
+
+#### LangDetectionPerformance
+Évalue les performances de la détection de la langue par lang_detect
+
+#### SmartPredictor
+Utilise le chainage de modèle avec le language detector sur différents modèles. Le lang detector filtre les entrées et ne laisse passer que les tweets anglophones.
+
+#### ChainPredictor
+Similaire au SmartPredictor mais ne filtre pas les tweets étrangers pour éviter les erreurs de filtrage, la prédiction est ajoutée aux données d'entrée.
+
+#### XGBoost et LightGBM
+Des tests isolés de ces modèles sur les données avec le smartpredictor.
+
+
+
