@@ -48,4 +48,7 @@ tweet_sent_predictor/data/train.txt -> tweet_sent_predictor/data/train_proper.cs
 
 ### Notebooks
 
-TODO
+#### Modèle BERT :
+Se trouve sur le notebook : BERT_Model.ipynb
+Ce notebook fait du fine-tuning sur les tweets d'un modèle BERT pré-entrainé et sauvegarde sous tf_models/BERT
+Ce modèle a été utilisé pour prédire les labels du corpus test
